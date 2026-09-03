@@ -1,0 +1,36 @@
+services: # Bloco principal onde declaramos todos os containers (serviços) do projeto
+
+  app: # Nome do serviço que vai rodar a aplicação PHP
+    image: php:8.2-apache # Imagem oficial do Docker Hub com PHP 8.2 já integrado ao servidor Apache
+    container_name: crud-app # Define um nome fixo e legível para o container (facilita "docker ps", "docker logs" etc.)
+    ports:
+      - "8080:80" # Mapeia a porta 80 do container (onde o Apache escuta) para a porta 8080 da máquina host
+    volumes:
+      - ./app:/var/www/html # Monta a pasta local "app" dentro do container, no diretório servido pelo Apache
+    environment: # Variáveis de ambiente que o código PHP lê (via getenv()) para se conectar ao banco
+      DB_HOST: db # Nome do serviço do banco de dados — o Docker resolve esse nome pela rede interna, sem precisar de IP fixo
+      DB_USER: root # Usuário do banco de dados usado pela aplicação
+      DB_PASSWORD: root # Senha do usuário acima (definida também no serviço "db" abaixo)
+      DB_NAME: crud_produtos # Nome do banco de dados que a aplicação vai usar
+    depends_on:
+      - db # Garante que o container "db" seja iniciado antes do container "app"
+    networks:
+      - minha-rede # Conecta este container à rede personalizada, permitindo comunicação por nome com o "db"
+
+  db: # Nome do serviço que vai rodar o banco de dados
+    image: mysql:8.0 # Imagem oficial do MySQL na versão 8.0, baixada do Docker Hub
+    container_name: crud-db # Nome fixo para o container do banco
+    environment: # Variáveis de ambiente exigidas pela imagem oficial do MySQL para se autoconfigurar
+      MYSQL_ROOT_PASSWORD: root # Define a senha do usuário root do MySQL (mesma senha usada em DB_PASSWORD no app)
+      MYSQL_DATABASE: crud_produtos # Cria automaticamente esse banco de dados na primeira inicialização
+    volumes:
+      - db_data:/var/lib/mysql # Associa o volume nomeado "db_data" à pasta interna onde o MySQL guarda os dados, garantindo persistência
+    networks:
+      - minha-rede # Conecta o banco à mesma rede personalizada usada pelo "app"
+
+volumes: # Declaração dos volumes nomeados usados pelo projeto
+  db_data: # Volume persistente: os dados do MySQL sobrevivem mesmo que o container seja removido/recriado
+
+networks: # Declaração das redes personalizadas usadas pelo projeto
+  minha-rede: # Nome da rede
+    driver: bridge # Tipo de rede "bridge": permite que os containers se comuniquem entre si pelo nome do serviço
