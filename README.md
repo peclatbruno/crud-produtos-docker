@@ -70,10 +70,9 @@ O arquivo declara dois serviços:
 - Criar uma rede `bridge` isolada (`minha-rede`) permite que os containers se comuniquem entre si pelo nome do serviço, em vez de depender de endereços IP fixos, o que deixa a configuração mais simples e portátil.
 - Usar `CREATE TABLE IF NOT EXISTS` no próprio código PHP elimina a necessidade de rodar scripts SQL manuais: o banco fica pronto para uso assim que a aplicação recebe a primeira requisição.
 
-## 6. Autores
+## 6. Autor
 
-- Bruno Peclat Barbosa 250291
-- Nome completo 2
+- Bruno Peclat Barbosa — RA 250291
 
 ---
 

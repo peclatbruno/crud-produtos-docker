@@ -22,6 +22,7 @@ services: # Bloco principal onde declaramos todos os containers (serviços) do p
   db: # Nome do serviço que vai rodar o banco de dados
     image: mysql:8.0 # Imagem oficial do MySQL na versão 8.0, baixada do Docker Hub
     container_name: crud-db # Nome fixo para o container do banco
+    command: --default-time-zone=America/Sao_Paulo # Configura o MySQL para salvar CURRENT_TIMESTAMP no horário de Brasília em vez de UTC (padrão)
     environment: # Variáveis de ambiente exigidas pela imagem oficial do MySQL para se autoconfigurar
       MYSQL_ROOT_PASSWORD: root # Define a senha do usuário root do MySQL (mesma senha usada em DB_PASSWORD no app)
       MYSQL_DATABASE: crud_produtos # Cria automaticamente esse banco de dados na primeira inicialização
