@@ -1,10 +1,12 @@
 services: # Bloco principal onde declaramos todos os containers (serviços) do projeto
 
   app: # Nome do serviço que vai rodar a aplicação PHP
-    image: php:8.2-apache # Imagem oficial do Docker Hub com PHP 8.2 já integrado ao servidor Apache
+    build:
+      context: . # Usa o Dockerfile na raiz do projeto, que parte da imagem oficial php:8.2-apache do Docker Hub e só adiciona a extensão pdo_mysql
+      dockerfile: Dockerfile
     container_name: crud-app # Define um nome fixo e legível para o container (facilita "docker ps", "docker logs" etc.)
     ports:
-      - "8080:80" # Mapeia a porta 80 do container (onde o Apache escuta) para a porta 8080 da máquina host
+      - "8081:80" # Mapeia a porta 80 do container (onde o Apache escuta) para a porta 8081 da máquina host
     volumes:
       - ./app:/var/www/html # Monta a pasta local "app" dentro do container, no diretório servido pelo Apache
     environment: # Variáveis de ambiente que o código PHP lê (via getenv()) para se conectar ao banco

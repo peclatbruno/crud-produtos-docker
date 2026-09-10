@@ -34,7 +34,7 @@ Não é necessário ter PHP ou MySQL instalados na máquina — tudo roda dentro
 
 3. **Criação da tabela no banco:** a tabela `produtos` é criada **automaticamente pelo código PHP**. O arquivo `app/db.php` executa um comando `CREATE TABLE IF NOT EXISTS` toda vez que a aplicação se conecta ao banco — ou seja, na primeira requisição feita ao subir os containers, a tabela já é criada sozinha, sem necessidade de rodar nenhum script SQL manualmente.
 
-4. **Acessar a aplicação:** abra o navegador em [http://localhost:8080](http://localhost:8080)
+4. **Acessar a aplicação:** abra o navegador em [http://localhost:8081](http://localhost:8081)
 
 5. **Para parar os containers:**
    ```bash
@@ -46,7 +46,7 @@ Não é necessário ter PHP ou MySQL instalados na máquina — tudo roda dentro
 
 O arquivo declara dois serviços:
 
-- **`app`**: container que roda a aplicação PHP, usando a imagem oficial `php:8.2-apache` (PHP já integrado ao servidor Apache). A pasta local `./app` é montada dentro do container em `/var/www/html`, que é o diretório servido pelo Apache. A porta `8080` da máquina host é mapeada para a porta `80` do container, permitindo o acesso via navegador.
+- **`app`**: container que roda a aplicação PHP. Em vez de usar a imagem `php:8.2-apache` diretamente, o serviço é construído a partir de um `Dockerfile` próprio (`build: .`), que parte dessa mesma imagem oficial do Docker Hub e apenas adiciona a extensão `pdo_mysql` (necessária para o PHP conseguir se conectar ao MySQL via PDO — ela não vem habilitada por padrão na imagem base). A pasta local `./app` é montada dentro do container em `/var/www/html`, que é o diretório servido pelo Apache. A porta `8081` da máquina host é mapeada para a porta `80` do container, permitindo o acesso via navegador.
 
 - **`db`**: container do banco de dados, usando a imagem oficial `mysql:8.0`. Um volume nomeado (`db_data`) é associado ao diretório interno `/var/lib/mysql`, garantindo que os dados não sejam perdidos quando o container é recriado.
 
@@ -72,7 +72,7 @@ O arquivo declara dois serviços:
 
 ## 6. Autores
 
-- Bruno Peclat Barbosa - 250291
+- Bruno Peclat Barbosa 250291
 - Nome completo 2
 
 ---
