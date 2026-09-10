@@ -63,7 +63,7 @@ O arquivo declara dois serviços:
 
 **Rede criada:** foi definida uma rede personalizada do tipo `bridge` chamada `minha-rede`. Ambos os serviços (`app` e `db`) estão conectados a ela, o que permite que o container `app` se comunique com o container `db` simplesmente usando o nome do serviço (`db`) como se fosse um hostname — sem precisar descobrir ou fixar um endereço IP.
 
-## 5. Pontos interessantes observados pela dupla
+## 5. Pontos interessantes observados
 
 - Utilizar variáveis de ambiente diretamente no `docker-compose.yml` facilita a mudança de configuração (usuário, senha, nome do banco) sem precisar alterar nenhuma linha do código PHP.
 - O volume nomeado (`db_data`) garante que os dados do banco persistam mesmo que os containers sejam removidos e recriados com `docker-compose down` e `docker-compose up` novamente.
